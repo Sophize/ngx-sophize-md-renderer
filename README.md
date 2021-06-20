@@ -1,6 +1,6 @@
-# NgxSophizeMdRenderer
+# Sophize Md Renderer (Angular)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.4.
+Angular renderer for Sophize Markdown. This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.4.
 
 ## Development server
 
