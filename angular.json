@@ -1,7 +1,42 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "4f7b3626-b9e6-4a7b-a8ed-d7b4e3feae0b"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-  }
+    "ngx-sophize-md-renderer": {
+      "projectType": "library",
+      "root": "projects/ngx-sophize-md-renderer",
+      "sourceRoot": "projects/ngx-sophize-md-renderer/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-sophize-md-renderer/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-sophize-md-renderer/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-sophize-md-renderer/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-sophize-md-renderer/src/test.ts",
+            "tsConfig": "projects/ngx-sophize-md-renderer/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-sophize-md-renderer/karma.conf.js"
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "ngx-sophize-md-renderer"
 }
