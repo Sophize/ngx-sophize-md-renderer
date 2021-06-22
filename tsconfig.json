@@ -18,6 +18,9 @@
       ]
     },
     "experimentalDecorators": true,
+    "noImplicitAny": false, // TS7016, TS7006,
+    "strictNullChecks": false, // TS2345
+    "strictPropertyInitialization": false, // TS2564
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2017",

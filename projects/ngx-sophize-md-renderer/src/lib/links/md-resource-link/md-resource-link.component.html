@@ -1,0 +1,54 @@
+<i *ngIf="resourceOptions?.error">Error: {{ resourceOptions.error }}</i>
+<lib-truth-value-icon
+  *ngIf="showTruthValueIcon()"
+  [propPtr]="getPropPtr()"
+  (click)="goToResource()"
+></lib-truth-value-icon>
+<span
+  *ngIf="showValidityIcon()"
+  class="fa fa-sitemap"
+  matTooltip="Argument"
+  [ngStyle]="{ color: 'gray', 'margin-right.px': 2 }"
+  (click)="goToResource()"
+>
+</span>
+<lib-activated-icon
+  *ngIf="showActivatedIcon()"
+  [machinePtr]="resourcePtr"
+  (click)="goToResource()"
+>
+</lib-activated-icon>
+<sophize-md-simple-resource-link
+  *ngIf="resourceOptions && !resourceOptions.error && !isExpandMode()"
+  [linkPtr]="linkPtr"
+  [contextPtr]="contextPtr"
+  [resourceOptions]="resourceOptions"
+  [resource]="resource"
+  [finishedResourceFetch]="finishedResourceFetch"
+>
+</sophize-md-simple-resource-link>
+<ng-container *ngIf="isExpandMode() && !resourceOptions.error">
+  <ng-container [ngSwitch]="this.resourcePtr.resourceType">
+    <sophize-md-term-link
+      *ngSwitchCase="ResourceType.TERM"
+      [resourceOptions]="resourceOptions"
+      [resource]="resource"
+      [resourcePtr]="resourcePtr"
+      [contextPtr]="contextPtr"
+    ></sophize-md-term-link>
+    <sophize-md-proposition-link
+      *ngSwitchCase="ResourceType.PROPOSITION"
+      [resourceOptions]="resourceOptions"
+      [resource]="resource"
+      [linkPtr]="linkPtr"
+      [contextPtr]="contextPtr"
+    ></sophize-md-proposition-link>
+    <sophize-md-argument-link
+      *ngSwitchCase="ResourceType.ARGUMENT"
+      [resourceOptions]="resourceOptions"
+      [resource]="resource"
+      [resourcePtr]="resourcePtr"
+      [contextPtr]="contextPtr"
+    ></sophize-md-argument-link>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,22 @@
+<span *ngIf="internalError">BUG BUG!</span>
+<p *ngIf="argument && !resourceOptions?.shouldShowArgTextOnly()">
+  Premises:
+  <sophize-md-simple-resource-link
+    *ngFor="let premise of argument.premises"
+    [linkPtr]="toPtr(premise)"
+    [contextPtr]="resourcePtr"
+  ></sophize-md-simple-resource-link>
+  <br />
+  Conclusion:
+  <sophize-md-simple-resource-link
+    [linkPtr]="toPtr(argument.conclusion)"
+    [contextPtr]="resourcePtr"
+  ></sophize-md-simple-resource-link>
+</p>
+<!--
+<sophize-md-viewer
+    [content]="argText"
+    [context]="resourcePtr"
+    [viewerOptions]="argTextOptions"
+></sophize-md-viewer>
+-->

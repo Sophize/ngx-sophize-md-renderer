@@ -1,0 +1,21 @@
+.grey-border {
+  border-radius: 5px;
+  border: medium solid lightgrey;
+}
+
+.edit-preview {
+  @extend .grey-border;
+  background-color: #f2f2f2;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  @extend .grey-border;
+}
+textarea.mat-input-element {
+  padding: 3px;
+}
+.textarea-div {
+  padding-right: 11px;
+}

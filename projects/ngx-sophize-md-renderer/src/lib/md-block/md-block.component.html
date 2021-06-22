@@ -1,0 +1,83 @@
+<ng-container *ngFor="let node of nodes">
+  <ng-container [ngSwitch]="node.type">
+    <!-- Headings -->
+    <h1 *ngSwitchCase="'heading1'" [md-inline]="node.children"></h1>
+    <h2 *ngSwitchCase="'heading2'" [md-inline]="node.children"></h2>
+    <h3 *ngSwitchCase="'heading3'" [md-inline]="node.children"></h3>
+    <h4 *ngSwitchCase="'heading4'" [md-inline]="node.children"></h4>
+    <h5 *ngSwitchCase="'heading5'" [md-inline]="node.children"></h5>
+    <h6 *ngSwitchCase="'heading6'" [md-inline]="node.children"></h6>
+
+    <!-- Paragraph -->
+    <p *ngSwitchCase="'paragraph'" [md-inline]="node.children"></p>
+    <span *ngSwitchCase="'inline_paragraph'" [md-inline]="node.children"></span>
+
+    <!-- Lists -->
+    <ul *ngSwitchCase="'bullet_list'">
+      <li *ngFor="let item of node.children" [md-block]="item.children"></li>
+      <!-- Is item always 'list_item'? Is it okay to directly add item.child[0]?--->
+    </ul>
+
+    <ol *ngSwitchCase="'ordered_list'">
+      <li *ngFor="let item of node.children" [md-block]="item.children"></li>
+    </ol>
+
+    <!-- Tables TODO: cell alignement [attr.align]="node.align[i] || ''"-->
+    <table *ngSwitchCase="'table'">
+      <thead>
+        <tr>
+          <th
+            *ngFor="
+              let cell of node.children[0].children[0].children;
+              index as i
+            "
+            [md-inline]="cell.children"
+          ></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of node.children[1].children">
+          <td
+            *ngFor="let cell of row.children; index as i"
+            [md-inline]="cell.children"
+          ></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Code -->
+    <pre *ngSwitchCase="'code_block'"><code>{{ node.content }}</code></pre>
+    <pre *ngSwitchCase="'fence'"><code>{{ node.content }}</code></pre>
+
+    <!-- Thematic Break -->
+    <hr *ngSwitchCase="'hr'" />
+
+    <!-- Blockquotes -->
+    <blockquote
+      *ngSwitchCase="'blockquote'"
+      [md-block]="node.children"
+    ></blockquote>
+
+    <!-- Left aligned block - Align plugin -->
+    <span
+      *ngSwitchCase="'leftAligned'"
+      align="left"
+      [md-block]="node.children"
+    ></span>
+
+    <!-- Center aligned block - Align plugin -->
+    <span
+      *ngSwitchCase="'centerAligned'"
+      align="center"
+      [md-block]="node.children"
+    ></span>
+
+    <!-- Right aligned block - Align plugin -->
+    <span
+      *ngSwitchCase="'rightAligned'"
+      align="right"
+      [md-block]="node.children"
+    ></span>
+    <b *ngSwitchDefault>{{ node.type + " FAILED" }}</b>
+  </ng-container>
+</ng-container>

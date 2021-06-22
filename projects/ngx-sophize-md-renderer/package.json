@@ -1,6 +1,25 @@
 {
   "name": "ngx-sophize-md-renderer",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "description": "Angular renderer for Sophize Markdown",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sophize/ngx-sophize-md-renderer.git"
+  },
+  "keywords": [
+    "sophize",
+    "sophize-md",
+    "markdown",
+    "renderer",
+    "math",
+    "mathematics"
+  ],
+  "author": "Abhishek Chugh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Sophize/ngx-sophize-md-renderer/issues"
+  },
+  "homepage": "https://github.com/Sophize/ngx-sophize-md-renderer#readme",
   "peerDependencies": {
     "@angular/common": "^12.0.5",
     "@angular/core": "^12.0.5"

@@ -1,0 +1,20 @@
+<a
+  *ngIf="resourceOptions?.linkOption === LinkOption.NAV_LINK"
+  [href]="isRouterLink ? undefined : resourceLink"
+  [routerLink]="isRouterLink ? resourceLink : undefined"
+  [matTooltip]="displayPtr.toDisplayString(contextPtr?.datasetId)"
+>
+  <sophize-md-partial-latex
+    [inputString]="displayText"
+  ></sophize-md-partial-latex>
+</a>
+<span
+  *ngIf="isOverlayOrNoLink"
+  [matTooltip]="displayPtr.toDisplayString(contextPtr?.datasetId)"
+  [ngClass]="{ 'dotted-underline': isOverlay }"
+  (click)="goToResource()"
+>
+  <sophize-md-partial-latex
+    [inputString]="displayText"
+  ></sophize-md-partial-latex>
+</span>

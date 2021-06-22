@@ -1,0 +1,28 @@
+<!-- inline -->
+<ng-container *ngIf="!displayMode">
+  <div
+    *ngIf="rendered"
+    class="inlinemode-div"
+    [innerHTML]="rendered | keepHtml"
+  ></div>
+  <span *ngIf="error" style="font-weight: bold; color: blue; display: block">{{
+    error
+  }}</span>
+</ng-container>
+
+<!-- block with eqno -->
+<ng-container *ngIf="displayMode && equationInput">
+  <section class="eqno">
+    <div *ngIf="rendered" [innerHTML]="rendered | keepHtml"></div>
+    <span *ngIf="error" style="font-weight: bold; color: salmon">{{
+      error
+    }}</span>
+    <span>({{ equationInput }})</span>
+  </section>
+</ng-container>
+
+<!-- block -->
+<ng-container *ngIf="displayMode && !equationInput">
+  <div *ngIf="rendered" [innerHTML]="rendered | keepHtml"></div>
+  <span *ngIf="error" style="font-weight: bold; color: red">{{ error }}</span>
+</ng-container>

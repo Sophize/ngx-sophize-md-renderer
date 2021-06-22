@@ -1,0 +1,8 @@
+<ng-container *ngFor="let section of sections">
+  <sophize-md-latex
+    *ngIf="section.isLatex"
+    [latex]="section.text"
+  ></sophize-md-latex>
+  <span *ngIf="section.isLatex">&nbsp;</span>
+  <span *ngIf="!section.isLatex">{{ section.text }}</span>
+</ng-container>

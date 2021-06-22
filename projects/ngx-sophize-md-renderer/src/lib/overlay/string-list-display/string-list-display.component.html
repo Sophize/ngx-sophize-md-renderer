@@ -1,0 +1,24 @@
+<ng-container *ngIf="values?.length > 0">
+  <h3 class="header" *ngIf="label">{{ label }}</h3>
+  <div *ngIf="!horizontalView">
+    <div
+      style="margin-bottom: 10px; display: flex"
+      *ngFor="let value of values; let itemIndex = index"
+    >
+      <label *ngIf="!useMarkdown" class="mat-body">{{ value }} </label>
+      <sophize-md-viewer
+        *ngIf="useMarkdown"
+        [content]="value"
+      ></sophize-md-viewer>
+    </div>
+  </div>
+  <ng-container *ngIf="horizontalView">
+    <div *ngFor="let value of values" class="horizontalStringListItem">
+      <label *ngIf="!useMarkdown" class="mat-body">{{ value }} </label>
+      <sophize-md-viewer
+        *ngIf="useMarkdown"
+        [content]="value"
+      ></sophize-md-viewer>
+    </div>
+  </ng-container>
+</ng-container>

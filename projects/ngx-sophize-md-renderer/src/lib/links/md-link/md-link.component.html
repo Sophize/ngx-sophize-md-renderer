@@ -1,0 +1,32 @@
+<sophize-md-resource-link
+  *ngIf="
+    linkTarget.linkType === LinkType.RESOURCE_PTR ||
+    linkTarget.linkType === LinkType.PROP_PTR
+  "
+  [displayInput]="displayInput"
+  [linkPtr]="linkTarget.propPtr || linkTarget.ptr"
+  [contextPtr]="contextPtr"
+  [parentPlainText]="parentPlainText"
+  [parentCaseOption]="parentCaseOption"
+></sophize-md-resource-link>
+<sophize-md-comment-link
+  *ngIf="linkTarget.linkType === LinkType.COMMENT"
+  [displayInput]="displayInput"
+  [linkPtr]="linkTarget.ptr"
+  [commentId]="linkTarget.commentId"
+  [contextPtr]="contextPtr"
+></sophize-md-comment-link>
+<sophize-md-page-link
+  *ngIf="linkTarget.linkType === LinkType.PAGE_PTR"
+  [displayInput]="displayInput"
+  [pagePtr]="linkTarget.pagePtr"
+  [contextPtr]="contextPtr"
+>
+</sophize-md-page-link>
+<span
+  *ngIf="linkTarget.linkType === LinkType.UNKNOWN"
+  class="fake-link"
+  [matTooltip]="targetInput"
+>
+  Invalid Link Target
+</span>

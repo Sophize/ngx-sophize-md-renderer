@@ -1,0 +1,12 @@
+.horizontalStringListItem {
+  margin-right: 20px;
+  display: inline-block;
+}
+
+.header {
+  letter-spacing: 1px;
+  color: gray;
+  font-size: large;
+  font-weight: 600;
+  margin-bottom: 5px;
+}

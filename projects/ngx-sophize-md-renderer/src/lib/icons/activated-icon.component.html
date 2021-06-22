@@ -1,0 +1,14 @@
+<ng-container *ngIf="machinePtr && activated$.value !== null">
+  <span
+    *ngIf="activated$.value === false"
+    class="fa fa-toggle-off"
+    matTooltip="Machine not activated"
+    style="color: gray"
+  ></span>
+  <span
+    *ngIf="activated$.value === true"
+    class="fa fa-toggle-on"
+    matTooltip="Machine activated"
+    style="color: green"
+  ></span>
+</ng-container>

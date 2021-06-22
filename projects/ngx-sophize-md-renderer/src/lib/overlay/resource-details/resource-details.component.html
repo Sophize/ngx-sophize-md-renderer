@@ -1,0 +1,217 @@
+<mat-spinner diameter="40" *ngIf="fetching"></mat-spinner>
+<mat-card *ngIf="!fetching">
+  <mat-card-title>
+    <sophize-md-partial-latex
+      style="vertical-align: sub"
+      [inputString]="pageTitle"
+    ></sophize-md-partial-latex>
+    <!--<button
+            mat-raised-button
+            style="margin-left: 10px;"
+            color="primary"
+            *ngIf="!isNewResource && resourceType === ResourceType.BELIEFSET"
+            (click)="selectThisBset()"
+        >
+            SELECT
+        </button>-->
+    <!--
+        <button mat-icon-button (click)="openInThisTab()">
+            <mat-icon fontSet="fa" fontIcon="fa-anchor"></mat-icon>
+        </button>
+        <button mat-icon-button (click)="openResourceInNewTab()">
+            <mat-icon fontSet="fa" fontIcon="fa-external-link-alt"></mat-icon>
+        </button>-->
+  </mat-card-title>
+
+  <mat-card-subtitle>
+    <div>
+      <span
+        class="dotted-underline"
+        matTooltip="Copy to clipboard"
+        (click)="copyTopPtrId()"
+      >
+        <span class="far fa-copy"></span>
+        {{ topPtrId() }}
+      </span>
+      <div *ngIf="existingResource" class="metadata-container">
+        <div style="display: inline-grid; margin-left: 10px">
+          <span class="user-link">{{
+            existingResource.contributor?.userName
+          }}</span>
+        </div>
+      </div>
+    </div>
+    <!--<lib-truth-value-indicator
+      *ngIf="
+        (resourceType === ResourceType.PROPOSITION ||
+          resourceType === ResourceType.MACHINE) &&
+        !isNewResource &&
+        !editingEnabled
+      "
+      [propOrMacPtr]="existingResource?.getDisplayPtr()"
+      [bsetPtr]="localStorageService.inUseBeliefset$ | async"
+    >
+    </lib-truth-value-indicator> -->
+  </mat-card-subtitle>
+  <!--<span>{{ JSON.stringify(form.getRawValue()) }}</span>-->
+  <ng-container
+    *ngIf="
+      ![ResourceType.TERM, ResourceType.ARTICLE].includes(
+        resourcePtr?.resourceType
+      )
+    "
+  >
+    <lib-string-list-display
+      [values]="existingResource?.names"
+      label="Add alternate names"
+    ></lib-string-list-display>
+  </ng-container>
+
+  <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.TERM">
+    <span class="language-disp" *ngIf="term?.language">{{
+      term.language
+    }}</span>
+
+    <!-- TODOX [language]="term?.language" -->
+    <sophize-md-viewer [content]="term?.definition" [context]="context">
+    </sophize-md-viewer>
+    <lib-resource-list-display
+      *ngIf="term.language != Language.MetamathSetMm"
+      [values]="term?.lookupTerms"
+      [context]="context"
+      label="Lookup Terms"
+    ></lib-resource-list-display>
+    <ng-container *ngIf="term?.remarks">
+      <h2 class="mat-h2">Description</h2>
+      <sophize-md-viewer [content]="term.remarks" [context]="context">
+      </sophize-md-viewer>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.PROPOSITION">
+    <span class="language-disp" *ngIf="proposition?.language">{{
+      proposition.language
+    }}</span>
+
+    <!-- TODOX [language]="proposition?.language" -->
+    <sophize-md-viewer [content]="proposition?.statement" [context]="context">
+    </sophize-md-viewer>
+
+    <ng-container *ngIf="proposition?.negativeStatement">
+      <h4>Negation:</h4>
+      <sophize-md-viewer
+        [content]="proposition.negativeStatement"
+        [context]="context"
+      >
+      </sophize-md-viewer>
+    </ng-container>
+
+    <lib-resource-list-display
+      *ngIf="proposition.language != Language.MetamathSetMm"
+      [values]="proposition?.lookupTerms"
+      [context]="context"
+      label="Lookup Terms"
+    ></lib-resource-list-display>
+
+    <ng-container *ngIf="proposition?.remarks">
+      <h2 class="mat-h2">Description</h2>
+      <sophize-md-viewer [content]="proposition.remarks" [context]="context">
+      </sophize-md-viewer>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.ARGUMENT">
+    <span class="language-disp" *ngIf="argument?.language">{{
+      argument.language
+    }}</span>
+
+    <lib-resource-list-display
+      [values]="[argument.conclusion]"
+      [context]="context"
+      label="Conclusion"
+    ></lib-resource-list-display>
+
+    <lib-resource-list-display
+      *ngIf="argument?.premiseMachine"
+      [values]="[argument.premiseMachine]"
+      [context]="context"
+      label="Premise Machine"
+    ></lib-resource-list-display>
+
+    <h2 class="mat-h2">Argument Details</h2>
+    <sophize-md-viewer [content]="argument?.argumentText" [context]="context">
+    </sophize-md-viewer>
+
+    <lib-resource-list-display
+      [values]="argument?.premises"
+      [context]="context"
+      label="Premises"
+    ></lib-resource-list-display>
+
+    <lib-resource-list-display
+      *ngIf="argument.language != Language.MetamathSetMm"
+      [values]="argument?.lookupTerms"
+      [context]="context"
+      label="Lookup Terms"
+    ></lib-resource-list-display>
+  </ng-container>
+  <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.BELIEFSET">
+    <h2 class="mat-h2">Description</h2>
+    <sophize-md-viewer [content]="beliefset.description" [context]="context">
+    </sophize-md-viewer>
+
+    <lib-resource-list-display
+      [values]="beliefset?.subBeliefsetPtrs"
+      [context]="context"
+      label="Sub Beliefsets"
+    ></lib-resource-list-display>
+
+    <lib-resource-list-display
+      [values]="beliefset?.unsupportedPropositionPtrs"
+      [context]="context"
+      label="Unsupported Propositions"
+    ></lib-resource-list-display>
+
+    <lib-resource-list-display
+      [values]="beliefset?.unsupportedMachinePtrs"
+      [context]="context"
+      label="Unsupported Machines"
+    ></lib-resource-list-display>
+  </ng-container>
+  <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.ARTICLE">
+    <h2 class="mat-h2">Abstract</h2>
+    <i
+      ><sophize-md-viewer [content]="article.abstractText" [context]="context">
+      </sophize-md-viewer
+    ></i>
+
+    <lib-resource-list-display
+      [values]="[article.beliefset]"
+      [context]="context"
+      label="Article Belief Set"
+    ></lib-resource-list-display>
+
+    <h2 class="mat-h2" style="margin-top: 10px">Article content</h2>
+    <sophize-md-viewer [content]="article?.content" [context]="context">
+    </sophize-md-viewer>
+  </ng-container>
+  <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.PROJECT">
+    <h2 class="mat-h2">Project Description</h2>
+    <sophize-md-viewer [content]="project.description" [context]="context">
+    </sophize-md-viewer>
+  </ng-container>
+  <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.MACHINE">
+    <h2 class="mat-h2">Machine Description</h2>
+    <sophize-md-viewer [content]="machine.description" [context]="context">
+    </sophize-md-viewer>
+  </ng-container>
+
+  <lib-string-list-display
+    [values]="citationStringList"
+    label="References"
+    [horizontalView]="false"
+    [useMarkdown]="true"
+  ></lib-string-list-display>
+  <lib-string-list-display
+    [values]="existingResource?.tags"
+    label="Tags"
+  ></lib-string-list-display>
+</mat-card>

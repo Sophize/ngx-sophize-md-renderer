@@ -1,0 +1,30 @@
+<ng-container *ngIf="editingEnabled">
+  <div class="textarea-div">
+    <textarea
+      matInput
+      mat-autosize="true"
+      matAutosizeMinRows="2"
+      [placeholder]="placeholder"
+      name="editMdField"
+      [formControl]="formControl"
+      floatLabel="never"
+    ></textarea>
+    <span
+      *ngIf="autoPreview"
+      class="disable_select mat-caption"
+      style="cursor: pointer"
+      (click)="manualAction = !showPreview"
+    >
+      {{ showPreview ? "HIDE PREVIEW" : "SHOW PREVIEW" }}
+    </span>
+  </div>
+</ng-container>
+<div
+  *ngIf="showPreview || !editingEnabled"
+  [ngClass]="{ preview: true, 'edit-preview': editingEnabled }"
+>
+  <sophize-md-viewer
+    [content]="viewerContent | async"
+    [context]="context"
+  ></sophize-md-viewer>
+</div>

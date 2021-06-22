@@ -1,0 +1,16 @@
+<a
+  *ngIf="!isRouterLink"
+  class="fake-link"
+  [href]="commentLink + '#' + fragment"
+  [matTooltip]="displayInput"
+  >{{ linkText }}
+</a>
+<a
+  *ngIf="isRouterLink"
+  class="fake-link"
+  [routerLink]="commentLink"
+  [fragment]="fragment"
+  [target]="isNewTab()"
+  [matTooltip]="displayInput"
+  >{{ linkText }}
+</a>
