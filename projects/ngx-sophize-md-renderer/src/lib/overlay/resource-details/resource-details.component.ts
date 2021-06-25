@@ -41,10 +41,10 @@ export class ResourceDetailsComponent implements OnChanges {
     if (!changes['resourcePtr']) return;
     this.setPageTitle();
     this.fetching = true;
-    this.dataProvider.getResource(this.resourcePtr).subscribe(
-      (resource) => {
+    this.dataProvider.getResources([this.resourcePtr]).subscribe(
+      (resources) => {
         this.fetching = false;
-        this.existingResource = resource;
+        this.existingResource = resources?.[0];
         this.setPageTitle();
       },
       (_) => {
@@ -117,6 +117,6 @@ export class ResourceDetailsComponent implements OnChanges {
   }
 
   get context() {
-    return this.resourcePtr;
+    return { contextPtr: this.resourcePtr };
   }
 }

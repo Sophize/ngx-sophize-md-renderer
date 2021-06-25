@@ -78,6 +78,6 @@
       align="right"
       [md-block]="node.children"
     ></span>
-    <b *ngSwitchDefault>{{ node.type + " FAILED" }}</b>
+    <b *ngSwitchDefault>{{ 'unhandled in md-block: [' +  node.type + ']' }}</b>
   </ng-container>
 </ng-container>

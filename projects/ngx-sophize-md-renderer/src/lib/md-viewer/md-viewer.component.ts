@@ -5,12 +5,11 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { ResourcePointer } from 'sophize-datamodel';
-import { CaseOption } from 'sophize-md-parser';
-import { MarkdownParserService } from '../markdown-parser.service';
+import { Observable, of } from 'rxjs';
+import { MdContext } from 'sophize-md-parser';
+import { AstNode } from 'sophize-md-parser/dist/src/md-utils';
 import { Helpers } from '../helpers';
-import { MdViewerOptions } from '../viewer-options';
-
+import { MarkdownParserService } from '../markdown-parser.service';
 
 @Component({
   selector: 'sophize-md-viewer',
@@ -22,49 +21,24 @@ export class MdViewerComponent implements OnChanges {
   content = '';
 
   @Input()
-  context: ResourcePointer | null = null;
+  mdContext: MdContext;
 
-  @Input()
-  viewerOptions = new MdViewerOptions(
-    false,
-    false,
-    false,
-    CaseOption.DEFAULT_CASE
-  );
-
-  // TODOX: Handle different languages (especially metamath).
-
-  parseTree = [];
+  parseTree$: Observable<AstNode[]> = of([]);
 
   constructor(public parserService: MarkdownParserService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (
       !Helpers.hasChanged(changes, 'content') &&
-      !Helpers.hasChangedPtr(changes, 'context') &&
-      !Helpers.hasChanged(changes, 'viewerOptions', MdViewerOptions.equals)
+      !Helpers.hasChanged(changes, 'context')
     ) {
       return;
     }
 
-    if (this.viewerOptions.renderInline) {
-      this.parseTree = this.parserService.parseInline(
-        this.content,
-        this.context,
-        this.viewerOptions.plainText,
-        this.viewerOptions.caseOption
-      );
-    } else {
-      this.parseTree = this.parserService.parse(
-        this.content,
-        this.context,
-        this.viewerOptions.plainText,
-        this.viewerOptions.caseOption
-      );
-    }
     
-    if (this.viewerOptions.firstParagraphToSpan && this.parseTree?.[0]?.type === 'paragraph') {
-      this.parseTree[0].type = 'inline_paragraph';
-    }
+    this.parseTree$ = this.parserService.parse(
+      this.content,
+      this.mdContext
+    );
   }
 }

@@ -22,6 +22,13 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
+## Publishing to npm
+This library is published to npm at https://www.npmjs.com/package/ngx-sophize-md-renderer. To publish a new version of this library to npm, do the following:
+
+* Update the version number in file `package.json`
+* Compile using `ng build`, `cd` and publish using `npm publish`
+* Publish a new release [here](https://github.com/Sophize/ngx-sophize-md-renderer/releases). Use the version number to set the `Tag version` and `Release Title` fields.
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

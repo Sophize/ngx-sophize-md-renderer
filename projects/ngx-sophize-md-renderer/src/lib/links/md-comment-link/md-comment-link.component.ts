@@ -2,13 +2,8 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 // import { CommentHelpers } from '../../../comments/comment-helpers';
 import { ResourcePointer } from 'sophize-datamodel';
+import { CommentDisplayOptions } from 'sophize-md-parser';
 import { AbstractDataProvider } from '../../data-provider';
-
-export enum CommentDisplayMode {
-  UNKNOWN = 'UNKNOWN',
-  CUSTOM = 'CUSTOM',
-  DEFAULT = 'DEFAULT',
-}
 
 function getCommentFragment(commentId: number) {
   return !commentId ? undefined : 'comment-' + commentId;
@@ -20,10 +15,9 @@ function getCommentFragment(commentId: number) {
 })
 export class MdCommentLinkComponent implements OnChanges {
   readonly P_GET = 'fetch';
-  readonly CommentDisplayMode = CommentDisplayMode;
 
   @Input()
-  displayInput = '';
+  options: CommentDisplayOptions;
 
   @Input()
   linkPtr: ResourcePointer;
@@ -39,7 +33,6 @@ export class MdCommentLinkComponent implements OnChanges {
 
   linkText = '';
   comment: Comment;
-  displayMode = CommentDisplayMode.DEFAULT;
 
   constructor(
     private dataProvider: AbstractDataProvider,
@@ -52,12 +45,12 @@ export class MdCommentLinkComponent implements OnChanges {
         [datasetId, resource_show_id].join('/')
       );
 
-      this.dataProvider.getResource(this.ptrFromUrl).subscribe((r) => {
-        if (!r) return;
+      this.dataProvider.getResources([this.ptrFromUrl]).subscribe((r) => {
+        if (!r?.[0]) return;
         const stringPtr =
           this.ptrFromUrl && this.ptrFromUrl.isAssignablePtr()
-            ? r.permanentPtr
-            : r.assignablePtr;
+            ? r[0].permanentPtr
+            : r[0].assignablePtr;
         this.ptrFromUrl2 = ResourcePointer.fromString(
           stringPtr,
           this.contextPtr.datasetId
@@ -71,9 +64,7 @@ export class MdCommentLinkComponent implements OnChanges {
       this.linkText = 'BUG BUG!';
       return;
     }
-
-    this.displayMode = MdCommentLinkComponent.getDisplayMode(this.displayInput);
-    this.linkText = this.getLinkText();
+    this.linkText = this.options.customText || this.getReferenceString();
   }
 
   get isRouterLink() {
@@ -104,49 +95,11 @@ export class MdCommentLinkComponent implements OnChanges {
     return '';
   }
 
-  private static getDisplayMode(displayString: string) {
-    if (!displayString) return CommentDisplayMode.DEFAULT;
-
-    if (
-      displayString.startsWith("'") &&
-      displayString.endsWith("'") &&
-      displayString.length > 2
-    ) {
-      return CommentDisplayMode.CUSTOM;
+  getReferenceString() {
+    if (this.linkPtr.equals(this.linkPtr)) {
+      return '#' + this.commentId;
     }
-
-    switch (displayString.toUpperCase()) {
-      case CommentDisplayMode.DEFAULT:
-        return CommentDisplayMode.DEFAULT;
-    }
-    return CommentDisplayMode.UNKNOWN;
-  }
-
-  private getLinkText() {
-    if (this.displayMode === CommentDisplayMode.UNKNOWN) {
-      return 'Unknown link format';
-    }
-    if (this.displayMode === CommentDisplayMode.CUSTOM) {
-      return this.displayInput.slice(1, -1);
-    }
-    return this.getReferenceString();
-  }
-
-  private getReferenceString() {
-    const ptrPart = '';
-    if (this.contextPtr) {
-      if (this.contextPtr.equals(this.linkPtr)) {
-        return '#' + this.commentId;
-      }
-      if (this.contextPtr.datasetId === this.linkPtr.datasetId) {
-        return (
-          '#' +
-          this.linkPtr.toString(this.contextPtr.datasetId) +
-          '/' +
-          this.commentId
-        );
-      }
-    }
-    return '#' + this.linkPtr.toString() + '/' + this.commentId;
+    const ptrDisplay = this.linkPtr.toDisplayString(this.contextPtr?.datasetId);
+    return '#' + ptrDisplay + '/' + this.commentId;
   }
 }

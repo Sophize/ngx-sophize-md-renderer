@@ -16,14 +16,11 @@ import { MdPartialLatexComponent } from './latex/md-partial-latex.component';
 import { ResourceDetailsComponent } from './overlay/resource-details/resource-details.component';
 import { ResourceListDisplayComponent } from './overlay/resource-list-display/resource-list-display.component';
 import { StringListDisplayComponent } from './overlay/string-list-display/string-list-display.component';
-import { MdArgumentLinkComponent } from './links/md-argument-link/md-argument-link.component';
 import { MdCommentLinkComponent } from './links/md-comment-link/md-comment-link.component';
 import { MdLinkComponent } from './links/md-link/md-link.component';
 import { MdPageLinkComponent } from './links/md-page-link/md-page-link.component';
-import { MdPropositionLinkComponent } from './links/md-proposition-link/md-proposition-link.component';
 import { MdResourceLinkComponent } from './links/md-resource-link/md-resource-link.component';
 import { MdSimpleResourceLinkComponent } from './links/md-simple-resource-link/md-simple-resource-link.component';
-import { MdTermLinkComponent } from './links/md-term-link/md-term-link.component';
 import { LocalDataProvider, LOCAL_PROVIDER_SERVER_ADDRESS } from './local-data-provider';
 import { MdBlockComponent } from './md-block/md-block.component';
 import { MdEditorComponent } from './md-editor/md-editor.component';
@@ -38,13 +35,10 @@ import { ResourceOverlayComponent } from './overlay/resource-overlay/resource-ov
     MdBlockComponent,
     MdInlineComponent,
 
-    MdArgumentLinkComponent,
     MdCommentLinkComponent,
     MdLinkComponent,
     MdPageLinkComponent,
-    MdPropositionLinkComponent,
     MdResourceLinkComponent,
-    MdTermLinkComponent,
 
     TruthValueIconComponent,
     ActivatedIconComponent,

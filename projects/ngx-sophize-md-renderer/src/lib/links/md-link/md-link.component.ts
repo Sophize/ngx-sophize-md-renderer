@@ -6,8 +6,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ResourcePointer, ResourceType } from 'sophize-datamodel';
-import { CaseOption, LinkContent } from 'sophize-md-parser';
-import { LinkHelpers, LinkTarget, LinkType } from 'sophize-md-parser';
+import { LinkContent, LinkTarget, LinkType } from 'sophize-md-parser';
 
 @Component({
   selector: 'sophize-md-link',
@@ -22,23 +21,13 @@ export class MdLinkComponent implements OnChanges {
   @Input()
   content: LinkContent;
 
-  displayInput = '';
-  targetInput = '';
   contextPtr: ResourcePointer;
-  linkTarget: LinkTarget;
-  parentCaseOption: CaseOption = null;
-  parentPlainText: boolean;
 
   ngOnChanges(changes: SimpleChanges) {
-    this.displayInput = this.content.display;
-    this.targetInput = this.content.target;
-    this.contextPtr = this.content.linkContext.contextPtr;
-    this.linkTarget = LinkHelpers.getLinkTarget(
-      this.targetInput,
-      this.contextPtr
-    );
+    this.contextPtr = this.content.linkContext?.contextPtr;
+  }
 
-    this.parentCaseOption = this.content.linkContext.caseOption;
-    this.parentPlainText = this.content.linkContext.plainText;
+  get linkTarget(): LinkTarget {
+    return this.content.linkTarget;
   }
 }

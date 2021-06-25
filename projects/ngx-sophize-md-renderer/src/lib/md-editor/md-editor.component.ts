@@ -8,10 +8,10 @@ import {
 import { FormControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, skip, take } from 'rxjs/operators';
+import { Language, ResourcePointer } from 'sophize-datamodel';
+import { CaseOption, MdContext } from 'sophize-md-parser';
 import { AbstractDataProvider } from '../data-provider';
 import { Helpers } from '../helpers';
-import { Language, ResourcePointer } from 'sophize-datamodel';
-import { metamathToMarkdown } from '../metamath/metamath-parser';
 
 const PREVIEW_TRIGGER_SET = /[#$()_+\[\]{}|~*<>=]/;
 
@@ -61,6 +61,7 @@ export class MdEditorComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (
+      // Everything except formControl.
       Helpers.hasChanged(changes, 'lookupTerms', ResourcePointer.listEquals) ||
       Helpers.hasChanged(changes, 'language') ||
       Helpers.hasChangedPtr(changes, 'context') ||
@@ -81,15 +82,8 @@ export class MdEditorComponent implements OnChanges {
 
   setViewerContent() {
     const userInput = this.formControl.value;
+    this.viewerContent.next(userInput || ' ');
     this.checkAutoPreview(userInput);
-    this.viewerContent.next(userInput ? userInput : ' ');
-    if (this.language === Language.MetamathSetMm) {
-      metamathToMarkdown(
-        userInput,
-        this.lookupTerms,
-        this.dataProvider
-      ).subscribe((mdString) => this.viewerContent.next(mdString));
-    }
   }
 
   checkAutoPreview(content: string) {
@@ -97,5 +91,16 @@ export class MdEditorComponent implements OnChanges {
     this.autoPreview =
       this.language === Language.MetamathSetMm ||
       PREVIEW_TRIGGER_SET.test(content);
+  }
+
+  get mdContext(): MdContext {
+    return {
+      inline: false,
+      language: this.language,
+      lookupTerms: this.lookupTerms,
+      contextPtr: this.context,
+      plainText: false,
+      caseOption: CaseOption.DEFAULT_CASE,
+    };
   }
 }

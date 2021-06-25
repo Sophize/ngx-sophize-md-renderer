@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { BehaviorSubject, forkJoin, from, Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import {
   emptyTruthStatus,
   Language,
   Resource,
   ResourcePointer,
-  ResourceType,
+  ResourceType
 } from 'sophize-datamodel';
 import { AbstractDataProvider } from './data-provider';
 import { ResourceOverlayComponent } from './overlay/resource-overlay/resource-overlay.component';
@@ -22,35 +22,38 @@ export class LocalDataProvider implements AbstractDataProvider {
     @Inject(LOCAL_PROVIDER_SERVER_ADDRESS) private serverAddress: string,
     private http: HttpClient
   ) {
-    console.log(serverAddress);
+    console.log('Address: ' + serverAddress);
     this.http
       .get(serverAddress + '/metamath_set_mm_latex_map')
       .subscribe((response) => {
         for (const v in response) {
-          this.metamathKeys[v] = response[v];
+          this.metamathKeys.set(v, response[v]);
         }
       }, console.log);
+    console.log(this.metamathKeys);
   }
 
-  getResource(ptr: ResourcePointer): Observable<Resource> {
+  getResources(ptrs: ResourcePointer[]): Observable<Resource[]> {
     // TIP: Serve a directory using `http-server --cors="*"`
-    const url = [
-      this.serverAddress,
-      ptr.datasetId,
-      ptr.resourceShowId + '.json',
-    ].join('/');
+    return forkJoin(ptrs.map(ptr=>{
+      const url = [
+        this.serverAddress,
+        ptr.datasetId,
+        ptr.resourceShowId + '.json',
+      ].join('/');
 
-    return this.http.get(url).pipe(
-      catchError((_) => of(null)),
-      map((response) => {
-        console.log(response);
-        if (response) {
-          response['assignablePtr'] = response['permanentPtr'] =
-            '#' + ptr.toString();
-        }
-        return response as Resource;
-      })
-    );
+      return this.http.get(url).pipe(
+        catchError((_) => of(null)),
+        map((response) => {
+          console.log(response);
+          if (response) {
+            response['assignablePtr'] = response['permanentPtr'] =
+              '#' + ptr.toString();
+          }
+          return response as Resource;
+        })
+      );
+    }))
   }
 
   getPages(ptr: ResourcePointer) {

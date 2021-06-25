@@ -2,7 +2,7 @@
   *ngIf="!isRouterLink"
   class="fake-link"
   [href]="commentLink + '#' + fragment"
-  [matTooltip]="displayInput"
+  [matTooltip]="getReferenceString()"
   >{{ linkText }}
 </a>
 <a
@@ -11,6 +11,6 @@
   [routerLink]="commentLink"
   [fragment]="fragment"
   [target]="isNewTab()"
-  [matTooltip]="displayInput"
+  [matTooltip]="getReferenceString()"
   >{{ linkText }}
 </a>

@@ -8,7 +8,7 @@ import {
 } from 'sophize-datamodel';
 
 export abstract class AbstractDataProvider {
-  abstract getResource(ptr: ResourcePointer): Observable<Resource>;
+  abstract getResources(ptr: ResourcePointer[]): Observable<Resource[]>;
 
   abstract getPages(ptr: ResourcePointer): Observable<Page[]>;
 

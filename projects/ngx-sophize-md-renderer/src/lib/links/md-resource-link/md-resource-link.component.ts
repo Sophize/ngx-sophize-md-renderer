@@ -32,7 +32,7 @@ export class MdResourceLinkComponent implements OnChanges {
   readonly LinkOption = LinkOption;
   readonly ResourceType = ResourceType;
   @Input()
-  displayInput = '';
+  options: ResourceDisplayOptions;
 
   @Input()
   linkPtr: ResourcePointer | PropositionPointer;
@@ -51,7 +51,6 @@ export class MdResourceLinkComponent implements OnChanges {
 
   resource: Resource;
   finishedResourceFetch = false;
-  resourceOptions: ResourceDisplayOptions;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -61,7 +60,7 @@ export class MdResourceLinkComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (
-      !Helpers.hasChanged(changes, 'displayInput') &&
+      !Helpers.hasChanged(changes, 'options') && // TODOX
       !Helpers.hasChangedPtr(changes, 'contextPtr') &&
       !Helpers.hasChanged(changes, 'positive') &&
       !Helpers.hasChanged(changes, 'parentPlainText') &&
@@ -74,17 +73,12 @@ export class MdResourceLinkComponent implements OnChanges {
         if (!Helpers.hasChangedPropPtr(changes, 'linkPtr')) return;
       }
     }
-    this.resourceOptions = new ResourceDisplayOptions(
-      this.displayInput,
-      this.parentPlainText,
-      this.parentCaseOption
-    );
 
     this.resource = null;
     this.finishedResourceFetch = false;
 
-    this.dataProvider.getResource(this.resourcePtr).subscribe((resource) => {
-      this.resource = resource;
+    this.dataProvider.getResources([this.resourcePtr]).subscribe((resources) => {
+      this.resource = resources?.[0];
       this.finishedResourceFetch = true;
       this.changeDetectorRef.markForCheck();
     });
@@ -92,13 +86,13 @@ export class MdResourceLinkComponent implements OnChanges {
 
   isExpandMode() {
     return (
-      this.resourceOptions?.getEffectiveMode(this.resource) ===
+      this.options?.getEffectiveMode(this.resource) ===
       ResourceDisplayMode.EXPAND
     );
   }
 
   goToResource() {
-    if (!(this.resourceOptions?.linkOption === LinkOption.OVERLAY_LINK)) {
+    if (!(this.options?.linkOption === LinkOption.OVERLAY_LINK)) {
       return;
     }
     this.dataProvider.onResourceOverlayAction(this.resourcePtr, this.dialog);
@@ -107,21 +101,21 @@ export class MdResourceLinkComponent implements OnChanges {
   showTruthValueIcon() {
     return (
       this.resourcePtr.resourceType === ResourceType.PROPOSITION &&
-      this.resourceOptions?.shouldShowTVI()
+      this.options?.shouldShowTVI()
     );
   }
 
   showValidityIcon() {
     return (
       this.resourcePtr.resourceType === ResourceType.ARGUMENT &&
-      this.resourceOptions?.shouldShowValidity()
+      this.options?.shouldShowValidity()
     );
   }
 
   showActivatedIcon() {
     return (
       this.resourcePtr.resourceType === ResourceType.MACHINE &&
-      this.resourceOptions?.shouldShowActivated()
+      this.options?.shouldShowActivated()
     );
   }
 

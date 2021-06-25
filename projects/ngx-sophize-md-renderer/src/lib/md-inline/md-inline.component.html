@@ -88,6 +88,6 @@
         <img *ngIf="tree.definition(node) as def" [src]="def.url" [title]="_T(def.title)" [alt]="_T(def.alt)" />
         </ng-container>
         -->
-    <b *ngSwitchDefault>{{ node.type }}</b>
+    <b *ngSwitchDefault>{{ "unhandled in md-inline: [" + node.type + "]" }}</b>
   </ng-container>
 </ng-container>

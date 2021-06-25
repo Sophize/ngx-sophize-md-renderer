@@ -3,22 +3,20 @@
     linkTarget.linkType === LinkType.RESOURCE_PTR ||
     linkTarget.linkType === LinkType.PROP_PTR
   "
-  [displayInput]="displayInput"
+  [options]="content.resourceDisplayOptions"
   [linkPtr]="linkTarget.propPtr || linkTarget.ptr"
   [contextPtr]="contextPtr"
-  [parentPlainText]="parentPlainText"
-  [parentCaseOption]="parentCaseOption"
 ></sophize-md-resource-link>
 <sophize-md-comment-link
   *ngIf="linkTarget.linkType === LinkType.COMMENT"
-  [displayInput]="displayInput"
+  [options]="content.commentDisplayOptions"
   [linkPtr]="linkTarget.ptr"
   [commentId]="linkTarget.commentId"
   [contextPtr]="contextPtr"
 ></sophize-md-comment-link>
 <sophize-md-page-link
   *ngIf="linkTarget.linkType === LinkType.PAGE_PTR"
-  [displayInput]="displayInput"
+  [options]="content.pageDisplayOptions"
   [pagePtr]="linkTarget.pagePtr"
   [contextPtr]="contextPtr"
 >
@@ -26,7 +24,6 @@
 <span
   *ngIf="linkTarget.linkType === LinkType.UNKNOWN"
   class="fake-link"
-  [matTooltip]="targetInput"
 >
   Invalid Link Target
 </span>

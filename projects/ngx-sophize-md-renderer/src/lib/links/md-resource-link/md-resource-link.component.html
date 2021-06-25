@@ -1,4 +1,4 @@
-<i *ngIf="resourceOptions?.error">Error: {{ resourceOptions.error }}</i>
+<i *ngIf="options?.error">Error: {{ options.error }}</i>
 <lib-truth-value-icon
   *ngIf="showTruthValueIcon()"
   [propPtr]="getPropPtr()"
@@ -19,36 +19,14 @@
 >
 </lib-activated-icon>
 <sophize-md-simple-resource-link
-  *ngIf="resourceOptions && !resourceOptions.error && !isExpandMode()"
+  *ngIf="!options.error && !isExpandMode()"
   [linkPtr]="linkPtr"
   [contextPtr]="contextPtr"
-  [resourceOptions]="resourceOptions"
+  [resourceOptions]="options"
   [resource]="resource"
   [finishedResourceFetch]="finishedResourceFetch"
 >
 </sophize-md-simple-resource-link>
-<ng-container *ngIf="isExpandMode() && !resourceOptions.error">
-  <ng-container [ngSwitch]="this.resourcePtr.resourceType">
-    <sophize-md-term-link
-      *ngSwitchCase="ResourceType.TERM"
-      [resourceOptions]="resourceOptions"
-      [resource]="resource"
-      [resourcePtr]="resourcePtr"
-      [contextPtr]="contextPtr"
-    ></sophize-md-term-link>
-    <sophize-md-proposition-link
-      *ngSwitchCase="ResourceType.PROPOSITION"
-      [resourceOptions]="resourceOptions"
-      [resource]="resource"
-      [linkPtr]="linkPtr"
-      [contextPtr]="contextPtr"
-    ></sophize-md-proposition-link>
-    <sophize-md-argument-link
-      *ngSwitchCase="ResourceType.ARGUMENT"
-      [resourceOptions]="resourceOptions"
-      [resource]="resource"
-      [resourcePtr]="resourcePtr"
-      [contextPtr]="contextPtr"
-    ></sophize-md-argument-link>
-  </ng-container>
+<ng-container *ngIf="isExpandMode() && !options.error">
+  <span >{{resourcePtr.toDisplayString(contextPtr?.datasetId) + '...'}}</span>
 </ng-container>

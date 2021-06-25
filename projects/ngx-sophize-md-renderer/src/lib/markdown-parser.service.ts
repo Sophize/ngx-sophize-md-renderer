@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ResourcePointer } from 'sophize-datamodel';
-import { CaseOption, MarkdownParser } from 'sophize-md-parser';
+import { CaseOption, MarkdownParser, MdContext } from 'sophize-md-parser';
+import { AbstractDataProvider } from './data-provider';
 
 @Injectable({
   providedIn: 'root',
@@ -8,21 +9,17 @@ import { CaseOption, MarkdownParser } from 'sophize-md-parser';
 export class MarkdownParserService {
   parser = new MarkdownParser();
 
+  constructor(private dataProvider: AbstractDataProvider) {}
+
   parse(
     mdString: string,
-    contextPtr: ResourcePointer,
-    plainText: boolean,
-    caseOption: CaseOption
+    mdContext: MdContext
   ) {
-    return this.parser.parse(mdString, contextPtr, plainText, caseOption);
-  }
-
-  parseInline(
-    mdString: string,
-    contextPtr: ResourcePointer,
-    plainText: boolean,
-    caseOption: CaseOption
-  ) {
-    return this.parser.parse(mdString, contextPtr, plainText, caseOption);
+    return this.parser.parseExpanded(
+      mdString,
+      (ptrs) => this.dataProvider.getResources(ptrs),
+      (l, strs) => this.dataProvider.getLatexDefs(l, strs),
+      mdContext
+    );
   }
 }

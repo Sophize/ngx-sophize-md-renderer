@@ -3,6 +3,6 @@
 <div *ngFor="let ptr of ptrs" class="list-item">
   <sophize-md-viewer
     [content]="'#' + ptr.toString()"
-    [context]="ptr"
+    [mdContext]="{ contextPtr: ptr }"
   ></sophize-md-viewer>
 </div>

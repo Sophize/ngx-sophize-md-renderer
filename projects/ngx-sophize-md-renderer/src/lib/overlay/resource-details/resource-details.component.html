@@ -72,18 +72,18 @@
       term.language
     }}</span>
 
-    <!-- TODOX [language]="term?.language" -->
-    <sophize-md-viewer [content]="term?.definition" [context]="context">
+    <!-- TODOX [language]="term?.language" and lookupTerms -->
+    <sophize-md-viewer [content]="term?.definition" [mdContext]="context">
     </sophize-md-viewer>
     <lib-resource-list-display
       *ngIf="term.language != Language.MetamathSetMm"
       [values]="term?.lookupTerms"
-      [context]="context"
+      [context]="resourcePtr"
       label="Lookup Terms"
     ></lib-resource-list-display>
     <ng-container *ngIf="term?.remarks">
       <h2 class="mat-h2">Description</h2>
-      <sophize-md-viewer [content]="term.remarks" [context]="context">
+      <sophize-md-viewer [content]="term.remarks" [mdContext]="context">
       </sophize-md-viewer>
     </ng-container>
   </ng-container>
@@ -93,14 +93,14 @@
     }}</span>
 
     <!-- TODOX [language]="proposition?.language" -->
-    <sophize-md-viewer [content]="proposition?.statement" [context]="context">
+    <sophize-md-viewer [content]="proposition?.statement" [mdContext]="context">
     </sophize-md-viewer>
 
     <ng-container *ngIf="proposition?.negativeStatement">
       <h4>Negation:</h4>
       <sophize-md-viewer
         [content]="proposition.negativeStatement"
-        [context]="context"
+        [mdContext]="context"
       >
       </sophize-md-viewer>
     </ng-container>
@@ -108,13 +108,13 @@
     <lib-resource-list-display
       *ngIf="proposition.language != Language.MetamathSetMm"
       [values]="proposition?.lookupTerms"
-      [context]="context"
+      [context]="resourcePtr"
       label="Lookup Terms"
     ></lib-resource-list-display>
 
     <ng-container *ngIf="proposition?.remarks">
       <h2 class="mat-h2">Description</h2>
-      <sophize-md-viewer [content]="proposition.remarks" [context]="context">
+      <sophize-md-viewer [content]="proposition.remarks" [mdContext]="context">
       </sophize-md-viewer>
     </ng-container>
   </ng-container>
@@ -125,82 +125,82 @@
 
     <lib-resource-list-display
       [values]="[argument.conclusion]"
-      [context]="context"
+      [context]="resourcePtr"
       label="Conclusion"
     ></lib-resource-list-display>
 
     <lib-resource-list-display
       *ngIf="argument?.premiseMachine"
       [values]="[argument.premiseMachine]"
-      [context]="context"
+      [context]="resourcePtr"
       label="Premise Machine"
     ></lib-resource-list-display>
 
     <h2 class="mat-h2">Argument Details</h2>
-    <sophize-md-viewer [content]="argument?.argumentText" [context]="context">
+    <sophize-md-viewer [content]="argument?.argumentText" [mdContext]="context">
     </sophize-md-viewer>
 
     <lib-resource-list-display
       [values]="argument?.premises"
-      [context]="context"
+      [context]="resourcePtr"
       label="Premises"
     ></lib-resource-list-display>
 
     <lib-resource-list-display
       *ngIf="argument.language != Language.MetamathSetMm"
       [values]="argument?.lookupTerms"
-      [context]="context"
+      [context]="resourcePtr"
       label="Lookup Terms"
     ></lib-resource-list-display>
   </ng-container>
   <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.BELIEFSET">
     <h2 class="mat-h2">Description</h2>
-    <sophize-md-viewer [content]="beliefset.description" [context]="context">
+    <sophize-md-viewer [content]="beliefset.description" [mdContext]="context">
     </sophize-md-viewer>
 
     <lib-resource-list-display
       [values]="beliefset?.subBeliefsetPtrs"
-      [context]="context"
+      [context]="resourcePtr"
       label="Sub Beliefsets"
     ></lib-resource-list-display>
 
     <lib-resource-list-display
       [values]="beliefset?.unsupportedPropositionPtrs"
-      [context]="context"
+      [context]="resourcePtr"
       label="Unsupported Propositions"
     ></lib-resource-list-display>
 
     <lib-resource-list-display
       [values]="beliefset?.unsupportedMachinePtrs"
-      [context]="context"
+      [context]="resourcePtr"
       label="Unsupported Machines"
     ></lib-resource-list-display>
   </ng-container>
   <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.ARTICLE">
     <h2 class="mat-h2">Abstract</h2>
     <i
-      ><sophize-md-viewer [content]="article.abstractText" [context]="context">
+      ><sophize-md-viewer [content]="article.abstractText" [mdContext]="context">
       </sophize-md-viewer
     ></i>
 
     <lib-resource-list-display
       [values]="[article.beliefset]"
-      [context]="context"
+      [context]="resourcePtr"
       label="Article Belief Set"
     ></lib-resource-list-display>
 
     <h2 class="mat-h2" style="margin-top: 10px">Article content</h2>
-    <sophize-md-viewer [content]="article?.content" [context]="context">
+    <sophize-md-viewer [content]="article?.content" [mdContext]="context">
     </sophize-md-viewer>
   </ng-container>
   <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.PROJECT">
     <h2 class="mat-h2">Project Description</h2>
-    <sophize-md-viewer [content]="project.description" [context]="context">
+    <sophize-md-viewer [content]="project.description" [mdContext]="context">
     </sophize-md-viewer>
   </ng-container>
   <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.MACHINE">
     <h2 class="mat-h2">Machine Description</h2>
-    <sophize-md-viewer [content]="machine.description" [context]="context">
+    <sophize-md-viewer [content]="machine.description" [mdContext]="context">
     </sophize-md-viewer>
   </ng-container>
 
