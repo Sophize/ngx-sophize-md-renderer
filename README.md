@@ -26,7 +26,7 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 This library is published to npm at https://www.npmjs.com/package/ngx-sophize-md-renderer. To publish a new version of this library to npm, do the following:
 
 * Update the version number in file `package.json`
-* Compile using `ng build`, `cd` and publish using `npm publish`
+* Compile using `ng build`, `cd dist\ngx-sophize-md-renderer` and publish using `npm publish`
 * Publish a new release [here](https://github.com/Sophize/ngx-sophize-md-renderer/releases). Use the version number to set the `Tag version` and `Release Title` fields.
 
 ## Further help
