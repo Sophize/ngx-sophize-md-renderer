@@ -1,6 +1,6 @@
-# NgxSophizeMdRenderer
+# Sophize Md Renderer (Angular)
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.5.
+Angular renderer for Sophize Markdown.This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.5.
 
 ## Code scaffolding
 
@@ -11,9 +11,13 @@ Run `ng generate component component-name --project ngx-sophize-md-renderer` to 
 
 Run `ng build ngx-sophize-md-renderer` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Publishing
+## Publishing to npm
+This library is published to npm at https://www.npmjs.com/package/ngx-sophize-md-renderer. To publish a new version of this library to npm, do the following:
 
-After building your library with `ng build ngx-sophize-md-renderer`, go to the dist folder `cd dist/ngx-sophize-md-renderer` and run `npm publish`.
+* Update the version number in file `package.json`
+* Compile using `ng build`, `cd dist\ngx-sophize-md-renderer` and publish using `npm publish`
+* Publish a new release [here](https://github.com/Sophize/ngx-sophize-md-renderer/releases). Use the version number to set the `Tag version` and `Release Title` fields.
+
 
 ## Running unit tests
 
