@@ -35,6 +35,8 @@ export class LocalDataProvider implements AbstractDataProvider {
 
   getResources(ptrs: ResourcePointer[]): Observable<Resource[]> {
     // TIP: Serve a directory using `http-server --cors="*"`
+    if(!ptrs.length) return of([]);
+    console.log(ptrs.map(ptr=>ptr.toString()).join(', '));
     return forkJoin(ptrs.map(ptr=>{
       const url = [
         this.serverAddress,
@@ -45,7 +47,7 @@ export class LocalDataProvider implements AbstractDataProvider {
       return this.http.get(url).pipe(
         catchError((_) => of(null)),
         map((response) => {
-          console.log(response);
+          // console.log(response);
           if (response) {
             response['assignablePtr'] = response['permanentPtr'] =
               '#' + ptr.toString();

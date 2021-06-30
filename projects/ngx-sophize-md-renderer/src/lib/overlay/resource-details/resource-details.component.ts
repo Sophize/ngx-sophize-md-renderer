@@ -14,6 +14,7 @@ import {
   Machine,
   Project,
 } from 'sophize-datamodel/dist/types';
+import { MdContext } from 'sophize-md-parser';
 import { AbstractDataProvider } from '../../data-provider';
 import { Helpers } from '../../helpers';
 
@@ -30,7 +31,7 @@ export class ResourceDetailsComponent implements OnChanges {
   @Input()
   resourcePtr = new ResourcePointer();
 
-  existingResource: Resource;
+  resource: Resource;
   pageTitle = '';
   fetching = false;
   fetchError = '';
@@ -44,7 +45,7 @@ export class ResourceDetailsComponent implements OnChanges {
     this.dataProvider.getResources([this.resourcePtr]).subscribe(
       (resources) => {
         this.fetching = false;
-        this.existingResource = resources?.[0];
+        this.resource = resources?.[0];
         this.setPageTitle();
       },
       (_) => {
@@ -63,17 +64,16 @@ export class ResourceDetailsComponent implements OnChanges {
   }
 
   setPageTitle() {
-    if (!this.existingResource) {
+    if (!this.resource) {
       this.pageTitle = this.resourcePtr.resourceType;
       return;
     }
 
     this.pageTitle =
-      Helpers.getPrimaryName(this.existingResource) ||
-      this.resourcePtr.resourceType;
+      Helpers.getPrimaryName(this.resource) || this.resourcePtr.resourceType;
     if (this.resourcePtr.resourceType === ResourceType.TERM) {
-      this.pageTitle = (this.existingResource as Term).phrase;
-      if ((this.existingResource as Term).language === Language.MetamathSetMm) {
+      this.pageTitle = (this.resource as Term).phrase;
+      if ((this.resource as Term).language === Language.MetamathSetMm) {
         this.dataProvider
           .getLatexDefs(Language.MetamathSetMm, [this.pageTitle])
           .subscribe(
@@ -84,39 +84,49 @@ export class ResourceDetailsComponent implements OnChanges {
   }
 
   get citationStringList() {
-    if (!this.existingResource?.citations) return [];
-    return this.existingResource.citations.map((c) => c.textCitation);
+    if (!this.resource?.citations) return [];
+    return this.resource.citations.map((c) => c.textCitation);
   }
 
   get term() {
-    return this.existingResource as Term;
+    return this.resource as Term;
   }
 
   get proposition() {
-    return this.existingResource as Proposition;
+    return this.resource as Proposition;
   }
 
   get argument() {
-    return this.existingResource as Argument;
+    return this.resource as Argument;
   }
 
   get beliefset() {
-    return this.existingResource as Beliefset;
+    return this.resource as Beliefset;
   }
 
   get article() {
-    return this.existingResource as Article;
+    return this.resource as Article;
   }
 
   get project() {
-    return this.existingResource as Project;
+    return this.resource as Project;
   }
 
   get machine() {
-    return this.existingResource as Machine;
+    return this.resource as Machine;
   }
 
-  get context() {
+  get context(): MdContext {
+    return {
+      language: (this.resource as any)?.language || Language.Informal,
+      lookupTerms: ResourcePointer.fromStringArr(
+        (this.resource as any)?.lookupTerms || []
+      ),
+      contextPtr: this.resourcePtr,
+    };
+  }
+
+  get simpleContext(): MdContext {
     return { contextPtr: this.resourcePtr };
   }
 }

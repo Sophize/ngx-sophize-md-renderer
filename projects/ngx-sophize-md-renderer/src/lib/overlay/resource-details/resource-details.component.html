@@ -33,11 +33,9 @@
         <span class="far fa-copy"></span>
         {{ topPtrId() }}
       </span>
-      <div *ngIf="existingResource" class="metadata-container">
+      <div *ngIf="resource" class="metadata-container">
         <div style="display: inline-grid; margin-left: 10px">
-          <span class="user-link">{{
-            existingResource.contributor?.userName
-          }}</span>
+          <span class="user-link">{{ resource.contributor?.userName }}</span>
         </div>
       </div>
     </div>
@@ -48,7 +46,7 @@
         !isNewResource &&
         !editingEnabled
       "
-      [propOrMacPtr]="existingResource?.getDisplayPtr()"
+      [propOrMacPtr]="resource?.getDisplayPtr()"
       [bsetPtr]="localStorageService.inUseBeliefset$ | async"
     >
     </lib-truth-value-indicator> -->
@@ -62,7 +60,7 @@
     "
   >
     <lib-string-list-display
-      [values]="existingResource?.names"
+      [values]="resource?.names"
       label="Add alternate names"
     ></lib-string-list-display>
   </ng-container>
@@ -72,7 +70,6 @@
       term.language
     }}</span>
 
-    <!-- TODOX [language]="term?.language" and lookupTerms -->
     <sophize-md-viewer [content]="term?.definition" [mdContext]="context">
     </sophize-md-viewer>
     <lib-resource-list-display
@@ -83,7 +80,7 @@
     ></lib-resource-list-display>
     <ng-container *ngIf="term?.remarks">
       <h2 class="mat-h2">Description</h2>
-      <sophize-md-viewer [content]="term.remarks" [mdContext]="context">
+      <sophize-md-viewer [content]="term.remarks" [mdContext]="simpleContext">
       </sophize-md-viewer>
     </ng-container>
   </ng-container>
@@ -92,7 +89,6 @@
       proposition.language
     }}</span>
 
-    <!-- TODOX [language]="proposition?.language" -->
     <sophize-md-viewer [content]="proposition?.statement" [mdContext]="context">
     </sophize-md-viewer>
 
@@ -114,7 +110,10 @@
 
     <ng-container *ngIf="proposition?.remarks">
       <h2 class="mat-h2">Description</h2>
-      <sophize-md-viewer [content]="proposition.remarks" [mdContext]="context">
+      <sophize-md-viewer
+        [content]="proposition.remarks"
+        [mdContext]="simpleContext"
+      >
       </sophize-md-viewer>
     </ng-container>
   </ng-container>
@@ -155,7 +154,10 @@
   </ng-container>
   <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.BELIEFSET">
     <h2 class="mat-h2">Description</h2>
-    <sophize-md-viewer [content]="beliefset.description" [mdContext]="context">
+    <sophize-md-viewer
+      [content]="beliefset.description"
+      [mdContext]="simpleContext"
+    >
     </sophize-md-viewer>
 
     <lib-resource-list-display
@@ -179,7 +181,10 @@
   <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.ARTICLE">
     <h2 class="mat-h2">Abstract</h2>
     <i
-      ><sophize-md-viewer [content]="article.abstractText" [mdContext]="context">
+      ><sophize-md-viewer
+        [content]="article.abstractText"
+        [mdContext]="context"
+      >
       </sophize-md-viewer
     ></i>
 
@@ -195,12 +200,18 @@
   </ng-container>
   <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.PROJECT">
     <h2 class="mat-h2">Project Description</h2>
-    <sophize-md-viewer [content]="project.description" [mdContext]="context">
+    <sophize-md-viewer
+      [content]="project.description"
+      [mdContext]="simpleContext"
+    >
     </sophize-md-viewer>
   </ng-container>
   <ng-container *ngIf="resourcePtr?.resourceType === ResourceType.MACHINE">
     <h2 class="mat-h2">Machine Description</h2>
-    <sophize-md-viewer [content]="machine.description" [mdContext]="context">
+    <sophize-md-viewer
+      [content]="machine.description"
+      [mdContext]="simpleContext"
+    >
     </sophize-md-viewer>
   </ng-container>
 
@@ -211,7 +222,7 @@
     [useMarkdown]="true"
   ></lib-string-list-display>
   <lib-string-list-display
-    [values]="existingResource?.tags"
+    [values]="resource?.tags"
     label="Tags"
   ></lib-string-list-display>
 </mat-card>

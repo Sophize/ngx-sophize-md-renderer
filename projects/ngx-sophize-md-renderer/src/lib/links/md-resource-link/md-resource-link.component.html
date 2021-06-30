@@ -28,5 +28,5 @@
 >
 </sophize-md-simple-resource-link>
 <ng-container *ngIf="isExpandMode() && !options.error">
-  <span >{{resourcePtr.toDisplayString(contextPtr?.datasetId) + '...'}}</span>
+  <span >{{'#' + resourcePtr.toDisplayString(contextPtr?.datasetId) + '...'}}</span>
 </ng-container>
