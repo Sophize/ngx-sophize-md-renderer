@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 14
       - run: npm ci
-      - run: npm test --watch=false
+      - run: npm run test:prod
 
   publish-npm:
     needs: build
@@ -28,7 +28,7 @@ jobs:
           node-version: 14
           registry-url: https://registry.npmjs.org/
       - run: npm ci
-      - run: npm build
+      - run: npm run build
       - run: npm publish dist/ngx-sophize-md-renderer
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
