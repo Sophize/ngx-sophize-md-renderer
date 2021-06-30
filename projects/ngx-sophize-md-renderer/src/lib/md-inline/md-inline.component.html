@@ -83,6 +83,32 @@
       [displayMode]="true"
     ></sophize-md-latex>
 
+    <!-- HACK: 'paragraph' and 'table' should only be block elements. But resource expansion causes them to be inline.
+      TODO: Fix the parser and remove this hack.
+     -->
+    <span *ngSwitchCase="'paragraph'" [md-inline]="node.children"></span> <!--hack-->
+    <table *ngSwitchCase="'table'"> 
+      <thead>
+        <tr>
+          <th
+            *ngFor="
+              let cell of node.children[0].children[0].children;
+              index as i
+            "
+            [md-inline]="cell.children"
+          ></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of node.children[1].children">
+          <td
+            *ngFor="let cell of row.children; index as i"
+            [md-inline]="cell.children"
+          ></td>
+        </tr>
+      </tbody>
+    </table>
+
     <!-- Image Reference
         <ng-container *ngSwitchCase="'imageReference'">
         <img *ngIf="tree.definition(node) as def" [src]="def.url" [title]="_T(def.title)" [alt]="_T(def.alt)" />

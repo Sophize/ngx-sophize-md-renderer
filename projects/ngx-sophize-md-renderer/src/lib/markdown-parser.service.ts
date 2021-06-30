@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ResourcePointer } from 'sophize-datamodel';
-import { CaseOption, MarkdownParser, MdContext } from 'sophize-md-parser';
+import { MarkdownParser, MdContext } from 'sophize-md-parser';
 import { AbstractDataProvider } from './data-provider';
 
 @Injectable({

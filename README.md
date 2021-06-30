@@ -2,6 +2,19 @@
 
 Angular renderer for Sophize Markdown. This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.4.
 
+# Usage
+
+This pacakge is compatible with angular 12 and above. To use in an angular application you also need to install katex and fontawesome:
+```
+    npm i @fortawesome/free-solid-svg-icons
+    npm i katex
+```
+Then import these in styles.scss
+```
+@import '~katex/dist/katex.min.css';
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
+```
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
