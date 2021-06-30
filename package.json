@@ -20,10 +20,11 @@
     "@angular/platform-browser": "~12.0.5",
     "@angular/platform-browser-dynamic": "~12.0.5",
     "@angular/router": "~12.0.5",
+    "@fortawesome/fontawesome-free": "^5.15.3",
     "katex": "^0.13.11",
     "rxjs": "^7.1.0",
     "sophize-datamodel": "^0.3.2",
-    "sophize-md-parser": "^0.1.0",
+    "sophize-md-parser": "^0.1.2",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"
   },
