@@ -1,19 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, forkJoin, from, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import {
   emptyTruthStatus,
   Language,
   Resource,
   ResourcePointer,
-  ResourceType
+  ResourceType,
 } from 'sophize-datamodel';
 import { AbstractDataProvider } from './data-provider';
 import { ResourceOverlayComponent } from './overlay/resource-overlay/resource-overlay.component';
 
 export const LOCAL_PROVIDER_SERVER_ADDRESS = 'local-data-provider-server-address';
+
+export function defaultResourceOverlayAction(
+  resourcePtr: ResourcePointer,
+  dialog?: any
+): void {
+  if (!ResourcePointer.isValid(resourcePtr) || !(dialog instanceof MatDialog))
+    return;
+  dialog.open(ResourceOverlayComponent, {
+    data: resourcePtr,
+    width: '150vw',
+    maxWidth: '150vw',
+  });
+}
 
 @Injectable()
 export class LocalDataProvider implements AbstractDataProvider {
@@ -35,27 +48,29 @@ export class LocalDataProvider implements AbstractDataProvider {
 
   getResources(ptrs: ResourcePointer[]): Observable<Resource[]> {
     // TIP: Serve a directory using `http-server --cors="*"`
-    if(!ptrs.length) return of([]);
-    console.log(ptrs.map(ptr=>ptr.toString()).join(', '));
-    return forkJoin(ptrs.map(ptr=>{
-      const url = [
-        this.serverAddress,
-        ptr.datasetId,
-        ptr.resourceShowId + '.json',
-      ].join('/');
+    if (!ptrs.length) return of([]);
+    console.log(ptrs.map((ptr) => ptr.toString()).join(', '));
+    return forkJoin(
+      ptrs.map((ptr) => {
+        const url = [
+          this.serverAddress,
+          ptr.datasetId,
+          ptr.resourceShowId + '.json',
+        ].join('/');
 
-      return this.http.get(url).pipe(
-        catchError((_) => of(null)),
-        map((response) => {
-          // console.log(response);
-          if (response) {
-            response['assignablePtr'] = response['permanentPtr'] =
-              '#' + ptr.toString();
-          }
-          return response as Resource;
-        })
-      );
-    }))
+        return this.http.get(url).pipe(
+          catchError((_) => of(null)),
+          map((response) => {
+            // console.log(response);
+            if (response) {
+              response['assignablePtr'] = response['permanentPtr'] =
+                '#' + ptr.toString();
+            }
+            return response as Resource;
+          })
+        );
+      })
+    );
   }
 
   getPages(ptr: ResourcePointer) {
@@ -92,13 +107,7 @@ export class LocalDataProvider implements AbstractDataProvider {
   }
 
   onResourceOverlayAction(resourcePtr: ResourcePointer, dialog?: any): void {
-    if (!ResourcePointer.isValid(resourcePtr) || !(dialog instanceof MatDialog))
-      return;
-    dialog.open(ResourceOverlayComponent, {
-      data: resourcePtr,
-      width: '150vw',
-      maxWidth: '150vw',
-    });
+    return defaultResourceOverlayAction(resourcePtr, dialog);
   }
 
   inUseBeliefset$ = new BehaviorSubject<ResourcePointer>(
