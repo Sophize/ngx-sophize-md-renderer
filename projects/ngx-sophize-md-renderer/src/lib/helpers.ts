@@ -160,7 +160,7 @@ export class Helpers {
 
   public static getPrimaryName(r: Resource) {
     if (!r) return '';
-    const type = Helpers.permanentOrEphemeralPtr(r).resourceType;
+    const type = Helpers.getDisplayPtr(r).resourceType;
     if (type === ResourceType.TERM) {
       const phrase = (r as unknown as Term).phrase;
       if (phrase) return phrase;
@@ -173,21 +173,12 @@ export class Helpers {
     return '';
   }
 
-  public static permanentOrEphemeralPtr(
-    r: Resource,
-    defaultDatasetId?: string
-  ): ResourcePointer {
-    const ptr = r.permanentPtr || r.ephemeralPtr;
-    return ptr ? ResourcePointer.fromString(ptr, defaultDatasetId) : null;
-  }
-
   public static getDisplayPtr(
     r: Resource,
     defaultDatasetId?: string
   ): ResourcePointer {
-    if (r.assignablePtr)
-      return ResourcePointer.fromString(r.assignablePtr, defaultDatasetId);
-    return Helpers.permanentOrEphemeralPtr(r);
+    const ptr = r.assignablePtr || r.permanentPtr || r.ephemeralPtr;
+    return ptr ? ResourcePointer.fromString(ptr, defaultDatasetId): null;
   }
 
   private constructor() {}
