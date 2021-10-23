@@ -105,10 +105,10 @@ export class MdResourceLinkComponent implements OnChanges {
     );
   }
 
-  showValidityIcon() {
+  showArgumentIcon() {
     return (
       this.resourcePtr.resourceType === ResourceType.ARGUMENT &&
-      this.options?.shouldShowValidity()
+      this.options?.shouldShowArgumentIcon()
     );
   }
 
